@@ -11,20 +11,19 @@ namespace SortAlgorithms.Core
         protected T[] _array;
         public T[] BaseArray => _array;
         public int ComparsionsCount { get; protected set; }
-        public int SwapCount { get; protected set; }
+        public int SwapsCount { get; protected set; }
+        public int SetsCount { get; protected set; }
         public SortBase() { }
-        public SortBase(IEnumerable<T> items) => SetFrom(items);
-        public void SetFrom(IEnumerable<T> items)
+        public SortBase(IEnumerable<T> items) => CopyFrom(items);
+        public void CopyFrom(IEnumerable<T> items)
         {
             if (items == null) throw new ArgumentNullException(nameof(items));
             _array = items.ToArray();
-            ComparsionsCount = 0;
-            SwapCount = 0;
+            Clear();
         }
         public TimeSpan Sort()
         {
-            ComparsionsCount = 0;
-            SwapCount = 0;
+            Clear();
             Stopwatch sw = Stopwatch.StartNew();
             DoSort();
             sw.Stop();
@@ -50,7 +49,7 @@ namespace SortAlgorithms.Core
                 T temp = _array[index1];
                 _array[index1] = _array[index2];
                 _array[index2] = temp;
-                SwapCount++;
+                SwapsCount++;
                 SwapEvent?.Invoke(this, new Tuple<int, int>(index1, index2));
             }
         }
@@ -61,7 +60,7 @@ namespace SortAlgorithms.Core
                 T temp = array[index1];
                 array[index1] = array[index2];
                 array[index2] = temp;
-                SwapCount++;
+                SwapsCount++;
                 SwapEvent?.Invoke(this, new Tuple<int, int>(index1, index2));
             }
         }
@@ -69,9 +68,16 @@ namespace SortAlgorithms.Core
         {
             if (index < _array.Length)
             {
-                SetEvent?.Invoke(this, new Tuple<int, T>(index, item));
+                SetEvent?.Invoke(this, new Tuple<int, T>(index, item));               
                 _array[index] = item;
+                SetsCount++;
             }
+        }
+        private void Clear()
+        {
+            ComparsionsCount = 0;
+            SwapsCount = 0;
+            SetsCount = 0;
         }
         public event EventHandler<Tuple<int, int>> CompareEvent;
         public event EventHandler<Tuple<int, int>> SwapEvent;

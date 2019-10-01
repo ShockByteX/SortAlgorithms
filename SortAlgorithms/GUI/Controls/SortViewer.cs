@@ -96,7 +96,7 @@ namespace SortAlgorithms.GUI.Controls
         public void ApplyArray(int[] array)
         {
             _elapsed = TimeSpan.Zero;
-            _sort.SetFrom(array);
+            _sort.CopyFrom(array);
             _minElement = _maxElement = _sort.BaseArray[0];
             foreach (int item in _sort.BaseArray)
             {

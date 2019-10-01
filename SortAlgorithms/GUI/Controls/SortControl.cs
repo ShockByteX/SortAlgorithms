@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using SortAlgorithms.Core;
 using SortAlgorithms.GUI.Models;
@@ -16,8 +15,9 @@ namespace SortAlgorithms.GUI.Controls
             sortViewer.Delay = delay;
             lblSort.Text = sortType.ToString();
             _sort = (SortBase<int>)Activator.CreateInstance(sortType.Type.MakeGenericType(typeof(int)));
-            //_sort.SwapEvent += (s, e) => InvokeAction(() => lblSwaps.Text = _sort.SwapCount.ToString());
-            //_sort.CompareEvent += (s, e) => InvokeAction(() => lblComparsions.Text = _sort.ComparsionsCount.ToString());
+            _sort.SwapEvent += (s, e) => InvokeAction(() => lblSwaps.Text = _sort.SwapsCount.ToString());
+            _sort.CompareEvent += (s, e) => InvokeAction(() => lblComparsions.Text = _sort.ComparsionsCount.ToString());
+            _sort.SetEvent += (s, e) => InvokeAction(() => lblSets.Text = _sort.SetsCount.ToString());
             sortViewer.ApplySort(_sort);
         }
         public void ApplyArray(int[] array)
