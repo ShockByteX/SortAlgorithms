@@ -1,13 +1,10 @@
 ﻿using SortAlgorithms.Core;
 using System;
-using System.Threading;
 using System.Windows.Forms;
 using System.Reflection;
-using SortAlgorithms.Helpers;
 using SortAlgorithms.GUI.Models;
 using SortAlgorithms.GUI.Controls;
-using System.Collections.Generic;
-using System.Drawing;
+using SortAlgorithms.Helpers;
 
 namespace SortAlgorithms.GUI.Forms
 {
@@ -62,12 +59,6 @@ namespace SortAlgorithms.GUI.Forms
             {
                 control.Sort();
             }
-            //sortControl.ApplySort(_sort, Convert.ToInt32(nDelay.Value));
-            //new Thread(() =>
-            //{
-            //    _sort.Sort();
-            //}).Start();
-            Console.WriteLine();
         }
         private void btnAddSort_Click(object sender, EventArgs e)
         {
