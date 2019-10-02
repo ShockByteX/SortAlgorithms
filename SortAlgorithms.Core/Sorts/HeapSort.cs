@@ -1,58 +1,49 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SortAlgorithms.Core.Sorts
 {
     public class HeapSort<T> : SortBase<T> where T : IComparable
     {
-        private T[] _temp;
-        public HeapSort() : base() { }
+        private int _count;
+        public HeapSort() { }
         public HeapSort(IEnumerable<T> items) : base(items) { }
         protected override void DoSort()
         {
-            HeapArrayTransformation();
-            for (int i = 0; i < _array.Length; i++) _array[i] = RemoveMax(_temp.Length - i);
-        }
-        private void HeapArrayTransformation()
-        {
-            _temp = new T[_array.Length];
-            Array.Copy(_array, 0, _temp, 0, _array.Length);
-            for (int i = 0; i < _temp.Length; i++)
+            for (int i = _array.Length; i >= 0; i--)
             {
-                _array[i] = _temp[i];
-                int currentIndex = i;
-                int parentIndex = GetParentIndex(i);
-                while (currentIndex > 0 && Compare(currentIndex, parentIndex) == 1)
-                {
-                    Swap(currentIndex, parentIndex);
-                    currentIndex = parentIndex;
-                    parentIndex = GetParentIndex(currentIndex);
-                }
+                Sort(i);
+                _count++;
             }
-            Array.Copy(_array, 0, _temp, 0, _array.Length);
+            for (int i = _count - 1; i >= 0; i--)
+            {
+                Swap(0, i);
+                Sort(0, i);
+            }
         }
-        private T RemoveMax(int cursor)
+        private T RemoveTop()
         {
-            T item = _temp[0];
-            _temp[0] = _temp[cursor - 1];
-            Sort(cursor);
+            T item = _array[0];
+            _array[0] = _array[--_count];
+            Sort(0);
             return item;
         }
-        private void Sort(int cursor)
+        private void Sort(int currentIndex, int maxLength = -1)
         {
-            for (int i = 0, maxIndex = i; i < cursor; i = maxIndex)
+            maxLength = maxLength == -1 ? _array.Length : maxLength;
+            for (int i = currentIndex, maxIndex = i; currentIndex < maxLength; i = maxIndex)
             {
                 int leftIndex = GetLeftIndex(i);
                 int rightIndex = GetRightIndex(i);
-                if (leftIndex < cursor && Compare(ref _temp, leftIndex, maxIndex) == 1) maxIndex = leftIndex;
-                if (rightIndex < cursor && Compare(ref _temp, rightIndex, maxIndex) == 1) maxIndex = rightIndex;
+                if (leftIndex < maxLength && Compare(leftIndex, maxIndex) == 1) maxIndex = leftIndex;
+                if (rightIndex < maxLength && Compare(rightIndex, maxIndex) == 1) maxIndex = rightIndex;
                 if (i == maxIndex) return;
-                Swap(ref _temp, i, maxIndex);
+                Swap(i, maxIndex);
             }
         }
         private int GetParentIndex(int index) => (index - 1) >> 1;
         private int GetLeftIndex(int index) => (index << 1) + 1;
         private int GetRightIndex(int index) => (index << 1) + 2;
-
     }
 }

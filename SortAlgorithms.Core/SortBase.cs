@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace SortAlgorithms.Core
 {
@@ -14,8 +13,8 @@ namespace SortAlgorithms.Core
         public int SwapsCount { get; protected set; }
         public int SetsCount { get; protected set; }
         public SortBase() { }
-        public SortBase(IEnumerable<T> items) => CopyFrom(items);
-        public void CopyFrom(IEnumerable<T> items)
+        public SortBase(IEnumerable<T> items) => ApplyArray(items);
+        public void ApplyArray(IEnumerable<T> items)
         {
             if (items == null) throw new ArgumentNullException(nameof(items));
             _array = items.ToArray();
@@ -36,12 +35,6 @@ namespace SortAlgorithms.Core
             ComparsionsCount++;
             return _array[index1].CompareTo(_array[index2]);
         }
-        protected int Compare(ref T[] array, int index1, int index2)
-        {
-            //CompareEvent?.Invoke(this, new Tuple<int, int>(index1, index2));
-            //ComparsionsCount++;
-            return array[index1].CompareTo(array[index2]);
-        }
         protected void Swap(int index1, int index2)
         {
             if (index1 < _array.Length && index2 < _array.Length)
@@ -53,27 +46,16 @@ namespace SortAlgorithms.Core
                 SwapEvent?.Invoke(this, new Tuple<int, int>(index1, index2));
             }
         }
-        protected void Swap(ref T[] array, int index1, int index2)
-        {
-            if (index1 < array.Length && index2 < array.Length)
-            {
-                T temp = array[index1];
-                array[index1] = array[index2];
-                array[index2] = temp;
-                SwapsCount++;
-                SwapEvent?.Invoke(this, new Tuple<int, int>(index1, index2));
-            }
-        }
         protected void Set(int index, T item)
         {
             if (index < _array.Length)
             {
-                SetEvent?.Invoke(this, new Tuple<int, T>(index, item));               
+                SetEvent?.Invoke(this, new Tuple<int, T>(index, item));
                 _array[index] = item;
                 SetsCount++;
             }
         }
-        private void Clear()
+        protected void Clear()
         {
             ComparsionsCount = 0;
             SwapsCount = 0;

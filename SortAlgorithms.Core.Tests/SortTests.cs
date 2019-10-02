@@ -39,9 +39,9 @@ namespace SortAlgorithms.Core.Tests
         [TestMethod()]
         public void RadixSortTest() => TestSort(new RadixSort<int>(_array));
         [TestMethod()]
-        public void BlindSortTest() => TestSort(new MySort<int>(_array));
+        public void TreeSortTest() => TestSort(new TreeSort<int>(_array));
         [TestMethod()]
-        public void HeapSort() => TestSort(new HeapSort<int>(_array));
+        public void HeapSortTest() => TestSort(new HeapSort<int>(_array));
         private void TestSort(SortBase<int> sort)
         {
             sort.Sort();
