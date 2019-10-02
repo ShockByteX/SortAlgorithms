@@ -85,10 +85,12 @@ namespace SortAlgorithms.GUI.Controls
         {
             if (_sort != null)
             {
-                _sort.SwapEvent -= sort_SwapEvent;
                 _sort.CompareEvent -= sort_CompareEvent;
+                _sort.SwapEvent -= sort_SwapEvent;
+                _sort.SetEvent -= sort_SetEvent;
             }
             _sort = sort;
+            _sort.SetEvent += sort_SetEvent;
             _sort.SwapEvent += sort_SwapEvent;
             _sort.CompareEvent += sort_CompareEvent;
             Invalidate();
@@ -160,6 +162,12 @@ namespace SortAlgorithms.GUI.Controls
         {
             if (_delay > 0) Thread.Sleep(_delay);
             _pCompare = new Point(e.Item1, e.Item2);
+            Invalidate();
+        }
+        private void sort_SetEvent(object sender, Tuple<int, int> e)
+        {
+            if (_delay > 0) Thread.Sleep(_delay);
+            _pSwap = new Point(e.Item1, -1);
             Invalidate();
         }
     }
