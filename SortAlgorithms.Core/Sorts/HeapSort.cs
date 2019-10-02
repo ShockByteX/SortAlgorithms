@@ -10,6 +10,7 @@ namespace SortAlgorithms.Core.Sorts
         public HeapSort(IEnumerable<T> items) : base(items) { }
         protected override void DoSort()
         {
+            _count = 0;
             for (int i = _array.Length; i >= 0; i--)
             {
                 Sort(i);
