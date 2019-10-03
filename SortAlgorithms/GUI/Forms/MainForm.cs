@@ -16,7 +16,10 @@ namespace SortAlgorithms.GUI.Forms
         {
             InitializeComponent();
             Type[] types = AssemblyHelper.GetTypes(Assembly.GetAssembly(typeof(SortBase<int>)), $"{nameof(SortAlgorithms)}.{nameof(Core)}.{nameof(Core.Sorts)}");
-            foreach (Type type in types) cbSortType.Items.Add(new SortType(type));
+            foreach (Type type in types)
+            {
+                if (type.BaseType.Name == typeof(SortBase<int>).Name) cbSortType.Items.Add(new SortType(type));
+            }
             cbSortType.SelectedIndex = 0;
             nRandomFrom.Enabled = false;
             nRandomTo.Enabled = false;

@@ -133,9 +133,8 @@ namespace SortAlgorithms.GUI.Controls
                     int value = array[i];
                     int elementHeight = Height - (Height * (_maxElement - value) / _totElement);
                     SolidBrush bshUse = _bshElement;
-
-                    if (i == _pSwap.X || i == _pSwap.Y) bshUse = _bshElementSwap;
                     if (i == _pCompare.X || i == _pCompare.Y) bshUse = _bshElementCompare;
+                    if (i == _pSwap.X || i == _pSwap.Y) bshUse = _bshElementSwap;           
                     g.FillRectangle(bshUse, elementWidth * i + 1, Height - elementHeight, elementWidth - 2, elementHeight);
                 }
                 if (_elapsed != TimeSpan.Zero)
@@ -155,18 +154,21 @@ namespace SortAlgorithms.GUI.Controls
         private void sort_SwapEvent(object sender, Tuple<int, int> e)
         {
             if (_delay > 0) Thread.Sleep(_delay);
+            _pCompare = Point_MinusOne;
             _pSwap = new Point(e.Item1, e.Item2);
             Invalidate();
         }
         private void sort_CompareEvent(object sender, Tuple<int, int> e)
         {
             if (_delay > 0) Thread.Sleep(_delay);
+            //_pSwap = Point_MinusOne;
             _pCompare = new Point(e.Item1, e.Item2);
             Invalidate();
         }
         private void sort_SetEvent(object sender, Tuple<int, int> e)
         {
             if (_delay > 0) Thread.Sleep(_delay);
+            _pCompare = Point_MinusOne;
             _pSwap = new Point(e.Item1, -1);
             Invalidate();
         }

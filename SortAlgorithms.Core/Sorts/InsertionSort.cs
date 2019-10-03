@@ -9,12 +9,11 @@ namespace SortAlgorithms.Core.Sorts
         public InsertionSort(IEnumerable<T> items) : base(items) { }
         protected override void DoSort()
         {
-            int index = 0;
-            while (++index < _array.Length)
+            for (int i = 1; i < _array.Length; i++)
             {
-                for (int i = index; i > 0; i--)
+                for (int j = i; j > 0; j--)
                 {
-                    if (Compare(i, i - 1) == -1) Swap(i, i - 1); else break;
+                    if (Compare(j, j - 1) == -1) Swap(j, j - 1); else break;
                 }
             }
         }

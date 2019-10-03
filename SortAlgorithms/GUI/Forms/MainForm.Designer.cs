@@ -349,7 +349,7 @@
             0,
             0});
             this.nArrayLength.Minimum = new decimal(new int[] {
-            10,
+            4,
             0,
             0,
             0});
