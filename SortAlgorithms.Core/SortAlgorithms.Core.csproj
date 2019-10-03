@@ -39,6 +39,7 @@
     <Compile Include="SortBase.cs" />
     <Compile Include="Sorts\BogoSort.cs" />
     <Compile Include="Sorts\BubbleSort.cs" />
+    <Compile Include="Sorts\GnomeSort.cs" />
     <Compile Include="Sorts\HeapSort.cs" />
     <Compile Include="Sorts\InsertionSort.cs" />
     <Compile Include="Sorts\RadixSort.cs" />
