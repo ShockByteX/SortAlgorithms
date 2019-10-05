@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace SortAlgorithms.Core.Sorts
@@ -8,7 +7,7 @@ namespace SortAlgorithms.Core.Sorts
     {
         private TreeNode<T> _root;
         private int _count;
-        public TreeSort() : base() { }
+        public TreeSort() { }
         public TreeSort(IEnumerable<T> items) : base(items) { }
         protected override void DoSort()
         {

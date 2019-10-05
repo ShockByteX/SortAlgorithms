@@ -10,10 +10,7 @@ namespace SortAlgorithms.Core.Sorts
         public BogoSort(IEnumerable<T> items) : base(items) { }
         protected override void DoSort()
         {
-            while (!IsSorted())
-            {
-                for (int i = 0; i < _array.Length; i++) Swap(i, _rand.Next(0, _array.Length));
-            }
+            while (!IsSorted()) Shuffle();
         }
         private void Shuffle()
         {

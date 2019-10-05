@@ -29,21 +29,22 @@ namespace SortAlgorithms.Core
             return sw.Elapsed;
         }
         protected abstract void DoSort();
-        protected int Compare(int index1, int index2)
+        protected int Compare(int left, int right) => Compare(_array[left], _array[right]);
+        protected int Compare(T left, T right)
         {
-            CompareEvent?.Invoke(this, new Tuple<int, int>(index1, index2));
+            CompareEvent?.Invoke(this, new Tuple<T, T>(left, right));
             ComparsionsCount++;
-            return _array[index1].CompareTo(_array[index2]);
+            return left.CompareTo(right);
         }
-        protected void Swap(int index1, int index2)
+        protected void Swap(int left, int right)
         {
-            if (index1 < _array.Length && index2 < _array.Length)
+            if (left < _array.Length && right < _array.Length)
             {
-                T temp = _array[index1];
-                _array[index1] = _array[index2];
-                _array[index2] = temp;
+                T temp = _array[left];
+                _array[left] = _array[right];
+                _array[right] = temp;
                 SwapsCount++;
-                SwapEvent?.Invoke(this, new Tuple<int, int>(index1, index2));
+                SwapEvent?.Invoke(this, new Tuple<int, int>(left, right));
             }
         }
         protected void Set(int index, T item)
@@ -61,7 +62,7 @@ namespace SortAlgorithms.Core
             SwapsCount = 0;
             SetsCount = 0;
         }
-        public event EventHandler<Tuple<int, int>> CompareEvent;
+        public event EventHandler<Tuple<T, T>> CompareEvent;
         public event EventHandler<Tuple<int, int>> SwapEvent;
         public event EventHandler<Tuple<int, T>> SetEvent;
     }

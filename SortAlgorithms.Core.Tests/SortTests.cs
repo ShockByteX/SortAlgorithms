@@ -33,6 +33,10 @@ namespace SortAlgorithms.Core.Tests
         [TestMethod()]
         public void CocktailSortTest() => TestSort(new CocktailSort<int>(_array));
         [TestMethod()]
+        public void GnomeSortTest() => TestSort(new GnomeSort<int>(_array));
+        [TestMethod()]
+        public void SelectionSortTest() => TestSort(new SelectionSort<int>(_array));
+        [TestMethod()]
         public void InsertionSortTest() => TestSort(new InsertionSort<int>(_array));
         [TestMethod()]
         public void ShellSortTest() => TestSort(new ShellSort<int>(_array));
@@ -42,6 +46,8 @@ namespace SortAlgorithms.Core.Tests
         public void TreeSortTest() => TestSort(new TreeSort<int>(_array));
         [TestMethod()]
         public void HeapSortTest() => TestSort(new HeapSort<int>(_array));
+        [TestMethod()]
+        public void MergeSortTest() => TestSort(new MergeSort<int>(_array));
         private void TestSort(SortBase<int> sort)
         {
             sort.Sort();

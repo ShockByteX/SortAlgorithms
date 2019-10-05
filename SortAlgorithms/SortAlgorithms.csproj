@@ -41,10 +41,10 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GUI\Controls\SortControl.cs">
+    <Compile Include="GUI\Forms\SortControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="GUI\Controls\SortControl.Designer.cs">
+    <Compile Include="GUI\Forms\SortControl.Designer.cs">
       <DependentUpon>SortControl.cs</DependentUpon>
     </Compile>
     <Compile Include="GUI\Controls\SortViewer.cs">
@@ -61,7 +61,7 @@
     <Compile Include="Helpers\AssemblyHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="GUI\Controls\SortControl.resx">
+    <EmbeddedResource Include="GUI\Forms\SortControl.resx">
       <DependentUpon>SortControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Forms\MainForm.resx">
