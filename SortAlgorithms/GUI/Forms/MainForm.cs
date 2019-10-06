@@ -51,34 +51,31 @@ namespace SortAlgorithms.GUI.Forms
                 default: throw new NotSupportedException();
             }
             _array = array;
-            foreach (SortControl control in pnlSorts.Controls)
+            foreach (SortViewer control in pnlSorts.Controls)
             {
                 control.ApplyArray(_array);
             }
         }
         private void BtnSort_Click(object sender, EventArgs e)
         {
-            foreach (SortControl control in pnlSorts.Controls)
-            {
-                control.Sort();
-            }
+            foreach (SortViewer viewer in pnlSorts.Controls) viewer.Sort();
         }
         private void btnAddSort_Click(object sender, EventArgs e)
         {
-            SortControl sortControl = new SortControl(((SortType)cbSortType.SelectedItem), Convert.ToInt32(nSortDelay.Value))
+            SortViewer viewer = new SortViewer(((SortType)cbSortType.SelectedItem), Convert.ToInt32(nSortDelay.Value))
             {
                 Width = Convert.ToInt32(nWidth.Value),
                 Height = Convert.ToInt32(nHeight.Value),
             };
-            if (_array != null) sortControl.ApplyArray(_array);
-            pnlSorts.Controls.Add(sortControl);
+            if (_array != null) viewer.ApplyArray(_array);
+            pnlSorts.Controls.Add(viewer);
         }
         private void btnApplySortViewSize_Click(object sender, EventArgs e)
         {
-            foreach (SortControl control in pnlSorts.Controls)
+            foreach (SortViewer viewer in pnlSorts.Controls)
             {
-                control.Width = Convert.ToInt32(nWidth.Value);
-                control.Height = Convert.ToInt32(nHeight.Value);
+                viewer.Width = Convert.ToInt32(nWidth.Value);
+                viewer.Height = Convert.ToInt32(nHeight.Value);
             }
         }
     }

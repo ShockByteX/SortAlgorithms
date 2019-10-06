@@ -7,7 +7,7 @@ namespace SortAlgorithms.Core.Tests
     [TestClass()]
     public class SortTests
     {
-        public const int LENGTH = 5000;
+        public const int LENGTH = 500000;
         private Random _rand = new Random();
         private int[] _array, _sorted;
         [TestInitialize]
