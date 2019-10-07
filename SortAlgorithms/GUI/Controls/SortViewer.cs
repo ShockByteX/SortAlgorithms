@@ -24,12 +24,14 @@ namespace SortAlgorithms.GUI.Controls
         private Font _fontFinished = new Font("Tahoma", 12f, FontStyle.Bold);
         private Font _fontStats = new Font("Tahoma", 8.25f, FontStyle.Regular);
         private Font _fontClose = new Font("Webdings", 12f, FontStyle.Regular);
+        private Font _fontCaption = new Font("Tahoma", 8.25f, FontStyle.Bold);
         private TimeSpan _elapsed = TimeSpan.Zero;
         private int _maxElement, _minElement, _totElement;
         private int _delay;
         private Point _pSwap = Point_MinusOne, _pCompare = Point_MinusOne;
         private int _swaps, _comparsions, _sets;
         private Rectangle _rectStatsPanel, _rectCloseButton;
+        private string _sortName;
         public int Delay
         {
             get => _delay; set
@@ -98,11 +100,12 @@ namespace SortAlgorithms.GUI.Controls
             _sort.SwapEvent += sort_SwapEvent;
             _sort.CompareEvent += sort_CompareEvent;
             _delay = delay;
+            _sortName = sortType.ToString();
             StatsPanelHeight = 26;
         }
         public void Sort()
         {
-            Task.Run(() =>
+            Task.Factory.StartNew(() =>
             {
                 TimeSpan elapsed = _sort.Sort();
                 _pSwap = Point_MinusOne;
@@ -149,6 +152,10 @@ namespace SortAlgorithms.GUI.Controls
             g.Clear(_bshBackground.Color);
             DrawStatsPanel(g);
             DrawCloseButton(g);
+            SizeF captionSize = g.MeasureString(_sortName, _fontCaption);
+            float captionX = Width - (_rectCloseButton.Width + captionSize.Width + 4);
+            float captionY = (_rectCloseButton.Height - captionSize.Height) / 2f + _rectCloseButton.Y;
+            g.DrawString(_sortName, _fontCaption, _bshElement, captionX, captionY);
             int[] array = _sort.BaseArray;
             if (array == null) return;
             float elementWidth = (float)Width / (float)array.Length;

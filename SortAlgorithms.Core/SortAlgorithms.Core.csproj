@@ -44,6 +44,7 @@
     <Compile Include="Sorts\HeapSort.cs" />
     <Compile Include="Sorts\InsertionSort.cs" />
     <Compile Include="Sorts\MergeSort.cs" />
+    <Compile Include="Sorts\QuickSort.cs" />
     <Compile Include="Sorts\RadixSort.cs" />
     <Compile Include="Sorts\CocktailSort.cs" />
     <Compile Include="Sorts\SelectionSort.cs" />

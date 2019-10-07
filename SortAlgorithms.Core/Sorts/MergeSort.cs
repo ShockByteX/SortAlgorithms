@@ -14,7 +14,7 @@ namespace SortAlgorithms.Core.Sorts
         private void Sort(int index, int length)
         {
             if (length == 1) return;
-            int leftLength = length / 2;
+            int leftLength = length >> 1;
             int rightIndex = index + leftLength;
             int rightLength = length - leftLength;
             Sort(index, leftLength);
