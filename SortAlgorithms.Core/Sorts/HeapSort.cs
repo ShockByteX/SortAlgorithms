@@ -1,48 +1,51 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace SortAlgorithms.Core.Sorts
 {
-    public class HeapSort<T> : SortBase<T> where T : IComparable
+    public class HeapSort<T> : ISort<T> where T : IComparable
     {
-        private int _count;
-        public HeapSort() { }
-        public HeapSort(IEnumerable<T> items) : base(items) { }
-        protected override void DoSort()
+        public void Sort(T[] items, ISortOperator<T> sortOperator)
         {
-            _count = 0;
-            for (int i = _array.Length; i >= 0; i--)
+            var count = 0;
+
+            for (var i = items.Length; i >= 0; i--)
             {
-                Sort(i);
-                _count++;
+                Sort(items, sortOperator, i);
+                count++;
             }
-            for (int i = _count - 1; i >= 0; i--)
+
+            for (var i = count - 1; i >= 0; i--)
             {
-                Swap(0, i);
-                Sort(0, i);
+                sortOperator.Swap(items, 0, i);
+                Sort(items, sortOperator, 0, i);
             }
         }
-        private T RemoveTop()
+
+        private void Sort(T[] items, ISortOperator<T> sortOperator, int currentIndex, int maxLength = -1)
         {
-            T item = _array[0];
-            _array[0] = _array[--_count];
-            Sort(0);
-            return item;
-        }
-        private void Sort(int currentIndex, int maxLength = -1)
-        {
-            maxLength = maxLength == -1 ? _array.Length : maxLength;
+            maxLength = maxLength == -1 ? items.Length : maxLength;
+
             for (int i = currentIndex, maxIndex = i; currentIndex < maxLength; i = maxIndex)
             {
-                int leftIndex = GetLeftIndex(i);
-                int rightIndex = GetRightIndex(i);
-                if (leftIndex < maxLength && Compare(leftIndex, maxIndex) == 1) maxIndex = leftIndex;
-                if (rightIndex < maxLength && Compare(rightIndex, maxIndex) == 1) maxIndex = rightIndex;
+                var leftIndex = GetLeftIndex(i);
+                var rightIndex = GetRightIndex(i);
+
+                if (leftIndex < maxLength && sortOperator.Compare(items, leftIndex, maxIndex) == 1)
+                {
+                    maxIndex = leftIndex;
+                }
+
+                if (rightIndex < maxLength && sortOperator.Compare(items, rightIndex, maxIndex) == 1)
+                {
+                    maxIndex = rightIndex;
+                }
+
                 if (i == maxIndex) return;
-                Swap(i, maxIndex);
+
+                sortOperator.Swap(items, i, maxIndex);
             }
         }
-        private int GetParentIndex(int index) => (index - 1) >> 1;
+
         private int GetLeftIndex(int index) => (index << 1) + 1;
         private int GetRightIndex(int index) => (index << 1) + 2;
     }

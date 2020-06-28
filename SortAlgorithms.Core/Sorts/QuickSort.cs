@@ -1,32 +1,38 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace SortAlgorithms.Core.Sorts
 {
-    public class QuickSort<T> : SortBase<T> where T : IComparable
+    public class QuickSort<T> : ISort<T> where T : IComparable
     {
-        private Random _rand = new Random();
-        public QuickSort() { }
-        public QuickSort(IEnumerable<T> items) : base(items) { }
-        protected override void DoSort()
+        public void Sort(T[] items, ISortOperator<T> sortOperator)
         {
-            QSort(0, _array.Length - 1);
+            Sort(items, sortOperator, 0, items.Length - 1);
         }
-        private void QSort(int left, int right)
+
+        private static void Sort(T[] items, ISortOperator<T> sortOperator, int left, int right)
         {
             if (left >= right) return;
-            int pivot = Partition(left, right);
-            QSort(left, pivot - 1);
-            QSort(pivot + 1, right);
+
+            var pivot = Split(items, sortOperator, left, right);
+
+            Sort(items, sortOperator, left, pivot - 1);
+            Sort(items, sortOperator, pivot + 1, right);
         }
-        private int Partition(int left, int right)
+
+        private static int Split(T[] items, ISortOperator<T> sortOperator, int left, int right)
         {
-            int pointer = left; // Опорный элемент находится под right
-            for (int i = left; i <= right; i++)
+            var pointer = left;
+
+            for (var i = left; i <= right; i++)
             {
-                if (Compare(_array[i], _array[right]) == -1) Swap(i, pointer++);
+                if (sortOperator.Compare(items[i], items[right]) == -1)
+                {
+                    sortOperator.Swap(items, i, pointer++);
+                }
             }
-            Swap(pointer, right);
+
+            sortOperator.Swap(items, pointer, right);
+
             return pointer;
         }
     }

@@ -1,22 +1,24 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace SortAlgorithms.Core.Sorts
 {
-    public class ShellSort<T> : SortBase<T> where T : IComparable
+    public class ShellSort<T> : ISort<T> where T : IComparable
     {
-        public ShellSort() { }
-        public ShellSort(IEnumerable<T> items) : base(items) { }
-        protected override void DoSort()
+        public void Sort(T[] items, ISortOperator<T> sortOperator)
         {
-            int step = _array.Length;
+            var step = items.Length;
+
             while ((step /= 2) > 0)
             {
-                for (int i = step; i < _array.Length; i++)
+                for (var i = step; i < items.Length; i++)
                 {
-                    for (int j = i; j >= step; j -= step)
+                    for (var j = i; j >= step; j -= step)
                     {
-                        if (Compare(j, j - step) == -1) Swap(j, j - step); else break;
+                        if (sortOperator.Compare(items, j, j - step) == -1)
+                        {
+                            sortOperator.Swap(items, j, j - step);
+                        }
+                        else break;
                     }
                 }
             }

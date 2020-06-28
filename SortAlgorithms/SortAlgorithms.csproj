@@ -41,6 +41,7 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\GraphicsExtension.cs" />
     <Compile Include="GUI\Controls\SortViewer.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -50,8 +51,8 @@
     <Compile Include="GUI\Forms\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\Models\SortType.cs" />
-    <Compile Include="Helpers\ArrayExtensions.cs" />
+    <Compile Include="GUI\Models\SortWrapper.cs" />
+    <Compile Include="Extensions\ArrayExtension.cs" />
     <Compile Include="Helpers\AssemblyHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

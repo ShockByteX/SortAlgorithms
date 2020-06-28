@@ -3,39 +3,54 @@ using System.Collections.Generic;
 
 namespace SortAlgorithms.Core.Sorts
 {
-    public class TreeSort<T> : SortBase<T> where T : IComparable
+    public class TreeSort<T> : ISort<T> where T : IComparable
     {
-        private TreeNode<T> _root;
-        private int _count;
-        public TreeSort() { }
-        public TreeSort(IEnumerable<T> items) : base(items) { }
-        protected override void DoSort()
+        public void Sort(T[] items, ISortOperator<T> sortOperator)
         {
-            _count = 0;
-            _root = null;
-            for (int i = 0; i < _array.Length; i++) Add(new TreeNode<T>(_array[i], i));
-            T[] ordered = Inorder();
-            for (int i = 0; i < ordered.Length; i++) Set(i, ordered[i]);
-        }
-        private void Add(TreeNode<T> node)
-        {
-            if (_root == null)
+            var count = 0;
+            TreeNode<T> root = null;
+
+            for (var i = 0; i < items.Length; i++)
             {
-                _root = node;
-                _count++;
+                var node = new TreeNode<T>(items[i], i);
+
+                Add(items, sortOperator, node, ref count, ref root);
+            }
+
+            T[] ordered = Inorder(ref count, ref root);
+
+            for (var i = 0; i < ordered.Length; i++)
+            {
+                sortOperator.Set(items, ordered[i], i);
+            }
+        }
+
+        private static void Add(T[] items, ISortOperator<T> sortOperator, TreeNode<T> node, ref int count, ref TreeNode<T> root)
+        {
+            if (root == null)
+            {
+                root = node;
+                count++;
                 return;
             }
-            AddNode(node);
-            _count++;
+
+            AddNode(items, sortOperator, node, ref root);
+
+            count++;
         }
-        private void AddNode(TreeNode<T> node)
+
+        private static void AddNode(T[] items, ISortOperator<T> sortOperator, TreeNode<T> node, ref TreeNode<T> root)
         {
-            TreeNode<T> currentNode = _root;
+            var currentNode = root;
+
             while (currentNode != null)
             {
-                if (Compare(node.Index, currentNode.Index) == -1)
+                if (sortOperator.Compare(items, node.Index, currentNode.Index) == -1)
                 {
-                    if (currentNode.Left != null) currentNode = currentNode.Left;
+                    if (currentNode.Left != null)
+                    {
+                        currentNode = currentNode.Left;
+                    }
                     else
                     {
                         currentNode.Left = node;
@@ -44,7 +59,10 @@ namespace SortAlgorithms.Core.Sorts
                 }
                 else
                 {
-                    if (currentNode.Right != null) currentNode = currentNode.Right;
+                    if (currentNode.Right != null)
+                    {
+                        currentNode = currentNode.Right;
+                    }
                     else
                     {
                         currentNode.Right = node;
@@ -53,38 +71,45 @@ namespace SortAlgorithms.Core.Sorts
                 }
             }
         }
-        private T[] Inorder()
+
+        private static T[] Inorder(ref int count, ref TreeNode<T> root)
         {
-            Stack<TreeNode<T>> stack = new Stack<TreeNode<T>>();
-            TreeNode<T> node = _root;
-            T[] array = new T[_count];
-            int index = 0;
+            var stack = new Stack<TreeNode<T>>();
+            var node = root;
+            var array = new T[count];
+            var index = 0;
+
             while (node != null || stack.Count > 0)
             {
                 if (stack.Count > 0)
                 {
                     node = stack.Pop();
                     array[index++] = node.Item;
-                    if (node.Right != null) node = node.Right; else node = null;
+                    node = node.Right;
                 }
+
                 while (node != null)
                 {
                     stack.Push(node);
                     node = node.Left;
                 }
             }
+
             return array;
         }
+
         private class TreeNode<X> where X : IComparable
         {
-            public X Item;
-            public TreeNode<X> Left, Right;
-            public int Index;
             public TreeNode(X item, int index)
             {
                 Item = item;
                 Index = index;
             }
+
+            public X Item { get; }
+            public int Index { get; }
+            public TreeNode<X> Left { get; set; }
+            public TreeNode<X> Right { get; set; }
         }
     }
 }

@@ -1,20 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace SortAlgorithms.Core.Sorts
 {
-    public class GnomeSort<T> : SortBase<T> where T : IComparable
+    public class GnomeSort<T> : ISort<T> where T : IComparable
     {
-        public GnomeSort() { }
-        public GnomeSort(IEnumerable<T> items) : base(items) { }
-        protected override void DoSort()
+        public void Sort(T[] items, ISortOperator<T> sortOperator)
         {
-            int length = _array.Length - 1;
-            for (int i = 0; i < length; i++)
+            var length = items.Length - 1;
+
+            for (var i = 0; i < length; i++)
             {
-                while (i >= 0 && Compare(i, i + 1) == 1)
+                while (i >= 0 && sortOperator.Compare(items, i, i + 1) == 1)
                 {
-                    Swap(i, i + 1);
+                    sortOperator.Swap(items, i, i + 1);
                     i--;
                 }
             }

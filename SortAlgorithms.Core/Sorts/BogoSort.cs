@@ -1,28 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
+using SortAlgorithms.Core.Extensions;
 
 namespace SortAlgorithms.Core.Sorts
 {
-    public class BogoSort<T> : SortBase<T> where T : IComparable
+    public class BogoSort<T> : ISort<T> where T : IComparable
     {
-        private Random _rand = new Random();
-        public BogoSort() { }
-        public BogoSort(IEnumerable<T> items) : base(items) { }
-        protected override void DoSort()
+        private static readonly Random Random = new Random();
+
+        public void Sort(T[] items, ISortOperator<T> sortOperator)
         {
-            while (!IsSorted()) Shuffle();
-        }
-        private void Shuffle()
-        {
-            for (int i = 0; i < _array.Length; i++) Swap(0, _rand.Next(0, _array.Length));
-        }
-        private bool IsSorted()
-        {
-            for (int i = 1; i < _array.Length; i++)
+            while (!items.IsSorted())
             {
-                if (Compare(i, i - 1) == -1) return false;
+                for (var i = 0; i < items.Length; i++)
+                {
+                    sortOperator.Swap(items, 0, Random.Next(0, items.Length));
+                }
             }
-            return true;
         }
     }
 }

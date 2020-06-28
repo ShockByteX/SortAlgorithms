@@ -1,19 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace SortAlgorithms.Core.Sorts
 {
-    public class InsertionSort<T> : SortBase<T> where T : IComparable
+    public class InsertionSort<T> : ISort<T> where T : IComparable
     {
-        public InsertionSort() { }
-        public InsertionSort(IEnumerable<T> items) : base(items) { }
-        protected override void DoSort()
+        public void Sort(T[] items, ISortOperator<T> sortOperator)
         {
-            for (int i = 1; i < _array.Length; i++)
+            for (var i = 1; i < items.Length; i++)
             {
-                for (int j = i; j > 0; j--)
+                for (var j = i; j > 0; j--)
                 {
-                    if (Compare(j, j - 1) == -1) Swap(j, j - 1); else break;
+                    if (sortOperator.Compare(items, j, j - 1) == -1)
+                    {
+                        sortOperator.Swap(items, j, j - 1);
+                    }
+                    else break;
                 }
             }
         }

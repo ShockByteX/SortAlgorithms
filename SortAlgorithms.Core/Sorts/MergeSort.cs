@@ -1,42 +1,52 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace SortAlgorithms.Core.Sorts
 {
-    public class MergeSort<T> : SortBase<T> where T : IComparable
+    public class MergeSort<T> : ISort<T> where T : IComparable
     {
-        public MergeSort() { }
-        public MergeSort(IEnumerable<T> items) : base(items) { }
-        protected override void DoSort()
+        public void Sort(T[] items, ISortOperator<T> sortOperator)
         {
-            Sort(0, _array.Length);
+            Sort(items, sortOperator, 0, items.Length);
         }
-        private void Sort(int index, int length)
+
+        private void Sort(T[] items, ISortOperator<T> sortOperator, int index, int length)
         {
             if (length == 1) return;
-            int leftLength = length >> 1;
-            int rightIndex = index + leftLength;
-            int rightLength = length - leftLength;
-            Sort(index, leftLength);
-            Sort(rightIndex, rightLength);
-            Merge(index, leftLength, index + leftLength, length - leftLength);
+
+            var leftLength = length >> 1;
+            var rightIndex = index + leftLength;
+            var rightLength = length - leftLength;
+
+            Sort(items, sortOperator, index, leftLength);
+            Sort(items, sortOperator, rightIndex, rightLength);
+
+            Merge(items, sortOperator, index, leftLength, index + leftLength, length - leftLength);
         }
-        private void Merge(int leftIndex, int leftLength, int rightIndex, int rightLength)
+
+        private void Merge(T[] items, ISortOperator<T> sortOperator, int leftIndex, int leftLength, int rightIndex, int rightLength)
         {
             T[] array = new T[leftLength + rightLength];
+
             for (int i = 0, iLeft = leftIndex, iRight = rightIndex; i < array.Length; i++)
             {
                 if (iLeft < leftIndex + leftLength)
                 {
                     if (iRight < rightIndex + rightLength)
                     {
-                        if (Compare(iLeft, iRight) == -1) array[i] = _array[iLeft++]; else array[i] = _array[iRight++];
+                        array[i] = sortOperator.Compare(items, iLeft, iRight) == -1
+                            ? items[iLeft++]
+                            : items[iRight++];
                     }
-                    else array[i] = _array[iLeft++];
+                    else array[i] = items[iLeft++];
                 }
-                else array[i] = _array[iRight++];
+                else array[i] = items[iRight++];
             }
-            for (int i = 0; i < array.Length; i++) Set(i + leftIndex, array[i]); // Can use Array.Copy() for performance
+
+            // Can use Buffer.BlockCopy() or MsvcrtCopy for performance
+            for (var i = 0; i < array.Length; i++)
+            {
+                sortOperator.Set(items, array[i], i + leftIndex);
+            }
         }
     }
 }

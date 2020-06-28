@@ -5,7 +5,6 @@ using System.Reflection;
 using SortAlgorithms.GUI.Models;
 using SortAlgorithms.GUI.Controls;
 using SortAlgorithms.Helpers;
-using SortAlgorithms.Extensions;
 
 namespace SortAlgorithms.GUI.Forms
 {
@@ -16,24 +15,11 @@ namespace SortAlgorithms.GUI.Forms
         public MainForm()
         {
             InitializeComponent();
-
-            var assembly = Assembly.GetAssembly(typeof(ISort<int>));
-            var types = AssemblyHelper.GetTypes(assembly, $"{nameof(SortAlgorithms)}.{nameof(Core)}.{nameof(Core.Sorts)}");
-
+            Type[] types = AssemblyHelper.GetTypes(Assembly.GetAssembly(typeof(Sorter<int>)), $"{nameof(SortAlgorithms)}.{nameof(Core)}.{nameof(Core.Sorts)}");
             foreach (Type type in types)
             {
-                var typeInterfaces = type.GetInterfaces();
-
-                foreach (var typeInterface in typeInterfaces)
-                {
-                    if (typeInterface.Name.Equals(typeof(ISort<int>).Name))
-                    {
-                        cbSortType.Items.Add(SortWrapper.Create(type));
-                        break;
-                    }
-                }
+                if (type.BaseType.Name == typeof(Sorter<int>).Name) cbSortType.Items.Add(new SortType(type));
             }
-
             cbSortType.SelectedIndex = 0;
             nRandomFrom.Enabled = false;
             nRandomTo.Enabled = false;
@@ -42,7 +28,6 @@ namespace SortAlgorithms.GUI.Forms
             cbArrayCreationType.SelectedIndexChanged += cbArrayCreationType_SelectedIndexChanged;
             pnlSorts.AutoScroll = true;
         }
-
         private void cbArrayCreationType_SelectedIndexChanged(object sender, EventArgs e)
         {
             switch ((ArrayCreationType)cbArrayCreationType.SelectedIndex)
@@ -56,24 +41,16 @@ namespace SortAlgorithms.GUI.Forms
                 default: throw new NotSupportedException();
             }
         }
-
         private void btnCreate_Click(object sender, EventArgs e)
         {
-            var array = new int[Convert.ToInt32(nArrayLength.Value)];
-
+            int[] array = new int[Convert.ToInt32(nArrayLength.Value)];
             switch (cbArrayCreationType.SelectedIndex)
             {
-                case 0:
-                    array.FillShuffle();
-                    break;
-                case 1:
-                    array.FillRandom(Convert.ToInt32(nRandomFrom.Value), Convert.ToInt32(nRandomTo.Value));
-                    break;
+                case 0: array.FillShuffle(); break;
+                case 1: array.FillRandom(Convert.ToInt32(nRandomFrom.Value), Convert.ToInt32(nRandomTo.Value)); break;
                 default: throw new NotSupportedException();
             }
-
             _array = array;
-
             foreach (SortViewer control in pnlSorts.Controls)
             {
                 control.ApplyArray(_array);
@@ -81,28 +58,18 @@ namespace SortAlgorithms.GUI.Forms
         }
         private void BtnSort_Click(object sender, EventArgs e)
         {
-            foreach (SortViewer viewer in pnlSorts.Controls)
-            {
-                viewer.Sort();
-            }
+            foreach (SortViewer viewer in pnlSorts.Controls) viewer.Sort();
         }
-
         private void btnAddSort_Click(object sender, EventArgs e)
         {
-            var viewer = new SortViewer(((SortWrapper)cbSortType.SelectedItem), Convert.ToInt32(nSortDelay.Value))
+            SortViewer viewer = new SortViewer(((SortType)cbSortType.SelectedItem), Convert.ToInt32(nSortDelay.Value))
             {
                 Width = Convert.ToInt32(nWidth.Value),
                 Height = Convert.ToInt32(nHeight.Value),
             };
-
-            if (_array != null)
-            {
-                viewer.ApplyArray(_array);
-            }
-
+            if (_array != null) viewer.ApplyArray(_array);
             pnlSorts.Controls.Add(viewer);
         }
-
         private void btnApplySortViewSize_Click(object sender, EventArgs e)
         {
             foreach (SortViewer viewer in pnlSorts.Controls)

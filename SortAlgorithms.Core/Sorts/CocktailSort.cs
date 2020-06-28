@@ -1,37 +1,41 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace SortAlgorithms.Core.Sorts
 {
-    public class CocktailSort<T> : SortBase<T> where T : IComparable
+    public class CocktailSort<T> : ISort<T> where T : IComparable
     {
-        public CocktailSort() { }
-        public CocktailSort(IEnumerable<T> items) : base(items) { }
-        protected override void DoSort()
+        public void Sort(T[] items, ISortOperator<T> sortOperator)
         {
-            bool isDone = false;
-            int left = 0, right = _array.Length - 1;
+            var isDone = false;
+            var left = 0;
+            var right = items.Length - 1;
+
             while (!isDone)
             {
                 isDone = true;
-                for (int i = left; i < right; i++)
+
+                for (var i = left; i < right; i++)
                 {
-                    if (Compare(i, i + 1) == 1)
+                    if (sortOperator.Compare(items, i, i + 1) == 1)
                     {
-                        Swap(i, i + 1);
+                        sortOperator.Swap(items, i, i + 1);
                         isDone = false;
                     }
                 }
+
                 if (isDone) return;
+
                 right--;
-                for (int i = right; i > left; i--)
+
+                for (var i = right; i > left; i--)
                 {
-                    if (Compare(i, i - 1) == -1)
+                    if (sortOperator.Compare(items, i, i - 1) == -1)
                     {
-                        Swap(i, i - 1);
+                        sortOperator.Swap(items, i, i - 1);
                         isDone = false;
                     }
                 }
+
                 left++;
             }
         }
