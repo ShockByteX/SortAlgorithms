@@ -1,6 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using SortAlgorithms.Core.SortOperators;
 
 namespace SortAlgorithms.Core.Tests
 {

@@ -4,9 +4,9 @@ namespace SortAlgorithms.Core.SortOperators
 {
     public class EventsSortOperator<T> : ISortOperator<T> where T : IComparable
     {
-        public void Set(T[] array, T item, int index)
+        public void Set(T[] items, T item, int index)
         {
-            array[index] = item;
+            items[index] = item;
 
             SetEvent?.Invoke(this, new Tuple<T, int>(item, index));
         }

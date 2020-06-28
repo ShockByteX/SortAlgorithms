@@ -57,7 +57,7 @@ namespace SortAlgorithms.GUI.Forms
             }
         }
 
-        private void btnCreate_Click(object sender, EventArgs e)
+        private void OnCreateButtonClick(object sender, EventArgs e)
         {
             var array = new int[Convert.ToInt32(nArrayLength.Value)];
 
@@ -79,7 +79,7 @@ namespace SortAlgorithms.GUI.Forms
                 control.ApplyArray(_array);
             }
         }
-        private void BtnSort_Click(object sender, EventArgs e)
+        private void OnSortButtonClick(object sender, EventArgs e)
         {
             foreach (SortViewer viewer in pnlSorts.Controls)
             {
@@ -87,7 +87,7 @@ namespace SortAlgorithms.GUI.Forms
             }
         }
 
-        private void btnAddSort_Click(object sender, EventArgs e)
+        private void OnAddSortButtonClick(object sender, EventArgs e)
         {
             var viewer = new SortViewer(((SortWrapper)cbSortType.SelectedItem), Convert.ToInt32(nSortDelay.Value))
             {
@@ -103,7 +103,7 @@ namespace SortAlgorithms.GUI.Forms
             pnlSorts.Controls.Add(viewer);
         }
 
-        private void btnApplySortViewSize_Click(object sender, EventArgs e)
+        private void OnApplySortViewSizeButtonClick(object sender, EventArgs e)
         {
             foreach (SortViewer viewer in pnlSorts.Controls)
             {

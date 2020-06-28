@@ -78,7 +78,7 @@
             this.btnCreate.TabIndex = 0;
             this.btnCreate.Text = "Create";
             this.btnCreate.UseVisualStyleBackColor = true;
-            this.btnCreate.Click += new System.EventHandler(this.btnCreate_Click);
+            this.btnCreate.Click += new System.EventHandler(this.OnCreateButtonClick);
             // 
             // pnlMenu
             // 
@@ -148,7 +148,7 @@
             this.btnApplySortViewSize.TabIndex = 0;
             this.btnApplySortViewSize.Text = "Apply";
             this.btnApplySortViewSize.UseVisualStyleBackColor = true;
-            this.btnApplySortViewSize.Click += new System.EventHandler(this.btnApplySortViewSize_Click);
+            this.btnApplySortViewSize.Click += new System.EventHandler(this.OnApplySortViewSizeButtonClick);
             // 
             // lblSortViewWidth
             // 
@@ -227,7 +227,7 @@
             this.btnSort.TabIndex = 0;
             this.btnSort.Text = "Sort";
             this.btnSort.UseVisualStyleBackColor = true;
-            this.btnSort.Click += new System.EventHandler(this.BtnSort_Click);
+            this.btnSort.Click += new System.EventHandler(this.OnSortButtonClick);
             // 
             // btnAddSort
             // 
@@ -241,7 +241,7 @@
             this.btnAddSort.TabIndex = 0;
             this.btnAddSort.Text = "Add";
             this.btnAddSort.UseVisualStyleBackColor = true;
-            this.btnAddSort.Click += new System.EventHandler(this.btnAddSort_Click);
+            this.btnAddSort.Click += new System.EventHandler(this.OnAddSortButtonClick);
             // 
             // lblSortDelay
             // 
